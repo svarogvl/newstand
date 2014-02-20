@@ -9,7 +9,7 @@ public class mainform {
 
     public static void main(String args)
     {
-
+        ;
     }
 
 }
