@@ -32,47 +32,43 @@ class JStandFrame extends JFrame
     public JStandFrame()
     {
         setTitle("Газетный киоск");
-        Dimension sizeScreen = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension sizeScreen = calcSizeScreen(60);
 
-        //frame size is 60% of screen
-        int frameWidth = Math.round(sizeScreen.width*60/100);
-        int frameHeight = Math.round(sizeScreen.height*60/100);
+        //размеры главной формы
+        setSize(sizeScreen.width, sizeScreen.height);
 
-        setSize(frameWidth, frameHeight);
-
+        //кнопки для выбора газет журналов или книг
         JButton newsPaperButton = new JButton("Газеты");
         JButton magazineButton = new JButton("Журналы");
         JButton booksButton = new JButton("Книги");
 
         //добавляем панель для размещения на ней компонентов
         buttonPanel = new JPanel();
-
         add(buttonPanel);
-        //buttonPanel.setLayout(new GridBagLayout());
 
         //размещаем кнопки на панели
         buttonPanel.add(newsPaperButton);
         buttonPanel.add(magazineButton);
         buttonPanel.add(booksButton);
 
-        newsPaperPanel = new JPanel();
+//        newsPaperPanel = new JPanel();
 
-        newsPaperStat = new JTextArea("Статистика по газетам");
-        magazStat = new JTextArea("Статистика по журналам");
-        bookStat = new JTextArea("Статистика по книгам");
+        //текстовая область в которой выводится информация по каждой группе товаров
+        newsPaperStat = new JTextArea("Статистика по газетам", 5, 40);
+        magazStat = new JTextArea("Статистика по журналам", 5, 40);
+        bookStat = new JTextArea("Статистика по книгам", 5, 40);
 
+        //изначально каждая область скрыта от пользователя, до нажатия кнопки
         newsPaperStat.setVisible(false);
         magazStat.setVisible(false);
         bookStat.setVisible(false);
 
+        //слушатели для кнопок
         ActionListener clickNewsPaperListener = new ActionListener()
         {
             public void actionPerformed(ActionEvent event)
             {
-//                newsPaperPanel.add(newsPaperStat);
-                newsPaperStat.setVisible(false);
-                magazStat.setVisible(false);
-                bookStat.setVisible(false);
+                toggleAllTextArea(false);
                 buttonPanel.add(newsPaperStat);
                 newsPaperStat.setVisible(true);
             }
@@ -82,10 +78,7 @@ class JStandFrame extends JFrame
         {
             public void actionPerformed(ActionEvent event)
             {
-//                newsPaperPanel.add(magazStat);
-                newsPaperStat.setVisible(false);
-                magazStat.setVisible(false);
-                bookStat.setVisible(false);
+                toggleAllTextArea(false);
                 buttonPanel.add(magazStat);
                 magazStat.setVisible(true);
             }
@@ -95,22 +88,47 @@ class JStandFrame extends JFrame
         {
             public void actionPerformed(ActionEvent event)
             {
-                newsPaperStat.setVisible(false);
-                magazStat.setVisible(false);
-                bookStat.setVisible(false);
+                toggleAllTextArea(false);
                 buttonPanel.add(bookStat);
                 bookStat.setVisible(true);
             }
         };
 
+        //добавляем каждому слушателю по кнопке
         newsPaperButton.addActionListener(clickNewsPaperListener);
         magazineButton.addActionListener(clickMagazineListener);
         booksButton.addActionListener(clickBookListener);
-
-
     }
+
+    /**
+     *
+     * @param b скрыть или нет техт арею
+     */
+    private void toggleAllTextArea(boolean b)
+    {
+        newsPaperStat.setVisible(b);
+        magazStat.setVisible(b);
+        bookStat.setVisible(b);
+    }
+
+    /**
+     * Рассчитывает процент от размера экрана ширины и высоты
+     * @param percent процент от экрана
+     * @return ширину и высоту в объекте типа Dimension
+     */
+    private Dimension calcSizeScreen(int percent)
+    {
+        Dimension sizeScreen = Toolkit.getDefaultToolkit().getScreenSize();
+
+        //frame size is x% of screen
+        int frameWidth = Math.round(sizeScreen.width*percent/100);
+        int frameHeight = Math.round(sizeScreen.height*percent/100);
+
+        Dimension resCalc;
+        return resCalc = new Dimension(frameWidth, frameHeight);
+    }
+
     private JPanel buttonPanel;
-    private JPanel newsPaperPanel;
     private JTextArea newsPaperStat;
     private JTextArea magazStat;
     private JTextArea bookStat;
