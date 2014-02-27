@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import my.study.newstand.tools;
 
 import my.study.newstand.*;
 
@@ -32,7 +33,7 @@ class JStandFrame extends JFrame
     public JStandFrame()
     {
         setTitle("Газетный киоск");
-        Dimension sizeScreen = calcSizeScreen(60);
+        Dimension sizeScreen = tools.calcSizeScreen(60);
 
         //размеры главной формы
         setSize(sizeScreen.width, sizeScreen.height);
@@ -111,25 +112,21 @@ class JStandFrame extends JFrame
         bookStat.setVisible(b);
     }
 
-    /**
-     * Рассчитывает процент от размера экрана ширины и высоты
-     * @param percent процент от экрана
-     * @return ширину и высоту в объекте типа Dimension
-     */
-    private Dimension calcSizeScreen(int percent)
-    {
-        Dimension sizeScreen = Toolkit.getDefaultToolkit().getScreenSize();
-
-        //frame size is x% of screen
-        int frameWidth = Math.round(sizeScreen.width*percent/100);
-        int frameHeight = Math.round(sizeScreen.height*percent/100);
-
-        Dimension resCalc;
-        return resCalc = new Dimension(frameWidth, frameHeight);
-    }
-
     private JPanel buttonPanel;
     private JTextArea newsPaperStat;
     private JTextArea magazStat;
     private JTextArea bookStat;
+}
+
+class JFormBook extends JFrame{
+    public JFormBook()
+    {
+        setTitle("Добавление/редактирование информации о книгах");
+
+        //панель для отображения полей редактирования
+        JPanel formBookPanel = new JPanel();
+
+        JLabel bookNameLabel = new JLabel("Название книги");
+
+    }
 }
