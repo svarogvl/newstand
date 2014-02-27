@@ -92,6 +92,10 @@ class JStandFrame extends JFrame
                 toggleAllTextArea(false);
                 buttonPanel.add(bookStat);
                 bookStat.setVisible(true);
+
+                JFormBook formBookFrame = new JFormBook();
+                formBookFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                formBookFrame.setVisible(true);
             }
         };
 
@@ -122,11 +126,120 @@ class JFormBook extends JFrame{
     public JFormBook()
     {
         setTitle("Добавление/редактирование информации о книгах");
+        setSize(tools.calcSizeScreen(30));
 
         //панель для отображения полей редактирования
-        JPanel formBookPanel = new JPanel();
+        formBookPanel = new JPanel();
 
-        JLabel bookNameLabel = new JLabel("Название книги");
+        bookNameLabel = new JLabel("Название книги");
+        bookNameErrorLabel = new JLabel();
+        bookNameField = new JTextField(50);
+
+        bookAuthorLabel = new JLabel("Автор");
+        bookAuthorErrorLabel = new JLabel();
+        bookAuthorField = new JTextField(50);
+
+        bookPublishLabel = new JLabel("Опубликовано");
+        bookPublishErrorLabel = new JLabel();
+        bookPublishField = new JTextField(50);
+
+        bookCountPagesLabel = new JLabel("Количество страниц");
+        bookCountPagesErrorLabel = new JLabel();
+        bookCountPagesField = new JTextField(50);
+
+        JButton saveBook = new JButton("Сохранить");
+
+        formBookPanel.add(bookNameLabel);
+        formBookPanel.add(bookNameErrorLabel);
+        formBookPanel.add(bookNameField);
+
+        formBookPanel.add(bookAuthorLabel);
+        formBookPanel.add(bookAuthorErrorLabel);
+        formBookPanel.add(bookAuthorField);
+
+        formBookPanel.add(bookPublishLabel);
+        formBookPanel.add(bookPublishErrorLabel);
+        formBookPanel.add(bookPublishField);
+
+        formBookPanel.add(bookCountPagesLabel);
+        formBookPanel.add(bookCountPagesErrorLabel);
+        formBookPanel.add(bookCountPagesField);
+
+        formBookPanel.add(saveBook);
+
+        add(formBookPanel);
+
+        ActionListener saveClickListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                boolean isError = false;
+                bookNameErrorLabel.setText("");
+                bookAuthorErrorLabel.setText("");
+                bookPublishErrorLabel.setText("");
+                bookCountPagesErrorLabel.setText("");
+
+                if(bookNameField.getText().length() == 0){
+                    bookNameErrorLabel.setText("Имя книги должно быть заполнено");
+                    bookNameErrorLabel.setForeground(Color.red);
+                    isError = true;
+                }
+
+                if(bookAuthorField.getText().length() == 0){
+                    bookAuthorErrorLabel.setText("Название автора должно быть заполнено");
+                    bookAuthorErrorLabel.setForeground(Color.red);
+                    isError = true;
+                }
+
+                if(bookPublishField.getText().length() == 0){
+                    bookPublishErrorLabel.setText("Кем опубликовано должно быть заполнено");
+                    bookPublishErrorLabel.setForeground(Color.red);
+                    isError = true;
+                }
+
+                if(bookCountPagesField.getText().length() > 0){
+                    try{
+                        int countPages = Integer.parseInt(bookCountPagesField.getText());
+                    }
+                    catch(NumberFormatException ex){
+                        bookCountPagesErrorLabel.setText("Количество страниц должно быть числом.");
+                        isError = true;
+                    }
+                }
+                else
+                {
+                    bookCountPagesErrorLabel.setText("Количество страниц должно быть заполнено");
+                    bookCountPagesErrorLabel.setForeground(Color.red);
+                    isError = true;
+                }
+
+                if(!isError)
+                {
+                    ;
+                }
+
+            }
+        };
+
+        saveBook.addActionListener(saveClickListener);
 
     }
+
+    private JPanel formBookPanel;
+
+    private JLabel bookNameLabel;
+    private JLabel bookNameErrorLabel;
+    private JTextField bookNameField;
+
+    private JLabel bookAuthorLabel;
+    private JLabel bookAuthorErrorLabel;
+    private JTextField bookAuthorField;
+
+    private JLabel bookPublishLabel;
+    private JLabel bookPublishErrorLabel;
+    private JTextField bookPublishField;
+
+    private JLabel bookCountPagesLabel;
+    private JLabel bookCountPagesErrorLabel;
+    private JTextField bookCountPagesField;
 }
